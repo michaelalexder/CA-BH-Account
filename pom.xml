@@ -7,6 +7,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<modules>
+		<module>CA-BH-Account-API</module>
 		<module>CA-BH-Account-service</module>
 	</modules>
 </project>
