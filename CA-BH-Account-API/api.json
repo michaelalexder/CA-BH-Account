@@ -6,11 +6,163 @@
     "version": "1.0.0"
   },
   "paths": {
-
+    "/api/v1/account": {
+      "post": {
+        "summary": "Create new current account",
+        "tags": [
+          "accounts"
+        ],
+        "requestBody": {
+          "$ref": "#/components/schemas/createAccountRequest"
+        },
+        "responses": {
+          "200": {
+            "description": "Ok"
+          },
+          "500": {
+            "description": "Internal Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorView"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorView"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/account/info/{customerId}": {
+      "get": {
+        "summary": "Retrieves customer accounts info",
+        "tags": [
+          "accounts"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "customerId",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "nullable": false
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/customerAccountsInfo"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorView"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorView"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   },
   "components": {
     "schemas": {
-
+      "accountTransactionInfo": {
+        "type": "object",
+        "required": [
+          "accountId",
+          "amount",
+          "balance",
+          "createdAt"
+        ]
+      },
+      "customerAccountsInfo": {
+        "type": "object",
+        "required": [
+          "name",
+          "surname",
+          "balance",
+          "transactions"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "surname": {
+            "type": "string"
+          },
+          "balance": {
+            "type": "number"
+          },
+          "transactions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/accountTransactionInfo"
+            }
+          }
+        }
+      },
+      "createAccountRequest": {
+        "type": "object",
+        "required": [
+          "customerId",
+          "initialCredit"
+        ],
+        "properties": {
+          "customerId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "initialCredit": {
+            "type": "number"
+          }
+        }
+      },
+      "errorView": {
+        "type": "object",
+        "required": [
+          "message",
+          "details"
+        ],
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "details": {
+            "type": "string"
+          }
+        }
+      }
     }
   }
 }
