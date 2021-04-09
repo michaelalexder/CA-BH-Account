@@ -13,7 +13,14 @@
           "accounts"
         ],
         "requestBody": {
-          "$ref": "#/components/schemas/createAccountRequest"
+          "description": "Create account data",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/createAccountRequest"
+              }
+            }
+          }
         },
         "responses": {
           "200": {
