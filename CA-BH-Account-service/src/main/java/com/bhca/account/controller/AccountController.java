@@ -1,7 +1,5 @@
 package com.bhca.account.controller;
 
-import com.bhca.account.db.AccountStatus;
-import com.bhca.account.service.AccountService;
 import com.bhca.account.service.AccountTransactionService;
 import lombok.AllArgsConstructor;
 import org.openapitools.client.model.AccountData;
@@ -21,7 +19,6 @@ public class AccountController {
     private final Logger logger = LoggerFactory.getLogger(AccountController.class);
 
     private final AccountTransactionService accountTransactionService;
-    private final AccountService accountService;
 
     @PostMapping
     public void create(@RequestBody CreateAccountRequest request) {
@@ -34,6 +31,6 @@ public class AccountController {
     public List<AccountData> customerAccounts(@PathVariable UUID customerId, @RequestParam(required = false) Integer page,
                                               @RequestParam(required = false) Integer size) {
         logger.debug("Retrieving accounts for customer " + customerId);
-        return accountService.getAccountVerboseData(customerId, page, size);
+        return accountTransactionService.accountsWithTransactions(customerId, page, size);
     }
 }

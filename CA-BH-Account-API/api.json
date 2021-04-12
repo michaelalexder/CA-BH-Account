@@ -125,21 +125,13 @@
   },
   "components": {
     "schemas": {
-      "accountTransactionInfo": {
-        "type": "object",
-        "required": [
-          "accountId",
-          "amount",
-          "balance",
-          "createdAt"
-        ]
-      },
       "accountData": {
         "type": "object",
         "required": [
           "id",
           "number",
-          "balance"
+          "balance",
+          "transactions"
         ],
         "properties": {
           "id": {
@@ -151,32 +143,28 @@
           },
           "balance": {
             "type": "number"
-          }
-        }
-      },
-      "customerAccountInfo": {
-        "type": "object",
-        "required": [
-          "name",
-          "surname",
-          "balance",
-          "transactions"
-        ],
-        "properties": {
-          "name": {
-            "type": "string"
-          },
-          "surname": {
-            "type": "string"
-          },
-          "balance": {
-            "type": "number"
           },
           "transactions": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/accountTransactionInfo"
             }
+          }
+        }
+      },
+      "accountTransactionInfo": {
+        "type": "object",
+        "required": [
+          "amount",
+          "createdAt"
+        ],
+        "properties": {
+          "amount": {
+            "type": "number"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
           }
         }
       },

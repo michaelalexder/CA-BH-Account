@@ -2,6 +2,7 @@ package com.bhca.account.service;
 
 import com.bhca.account.configuration.cache.CachesConfig;
 import com.bhca.account.db.Account;
+import com.bhca.account.db.AccountSequenceNumber;
 import com.bhca.account.db.AccountStatus;
 import com.bhca.account.generator.AccountNumberGenerator;
 import com.bhca.account.repository.AccountRepository;
@@ -37,8 +38,8 @@ public class AccountService {
     public Account createAccount(UUID customerId, BigDecimal initialCredit) {
         Account account = new Account();
         account.setBalance(initialCredit);
+        account.setAccountNumber(new AccountSequenceNumber());
         account.setStatus(AccountStatus.INCOMPLETE);
-        account.setNumber(accountNumberGenerator.generate());
         account.setCustomer(customerId);
         repository.save(account);
         return account;
@@ -48,17 +49,15 @@ public class AccountService {
     @Transactional
     public void setCompleted(Account account) {
         account.setStatus(AccountStatus.COMPLETE);
+        account.setClientNumber(accountNumberGenerator.generate(account.getAccountNumber().getNumber().toString()));
         repository.save(account);
     }
 
     @Cacheable(value = CachesConfig.ACCOUNT_CACHE, key = "#customerId")
     @Transactional(readOnly = true)
-    public List<AccountData> getAccountVerboseData(UUID customerId, Integer page, Integer size) {
+    public List<Account> getAccountVerboseData(UUID customerId, Integer page, Integer size) {
         return repository.findByCustomer(customerId,
                 PageRequest.of(page == null ? 0 : page, size == null ? ACCOUNT_DATA_DEFAULT_SIZE : size,
-                        Sort.by(Sort.Direction.DESC, "createdAt")))
-                .stream()
-                .map(account -> new AccountData().id(account.getId()).number("").balance(account.getBalance()))
-                .collect(Collectors.toList());
+                        Sort.by(Sort.Direction.DESC, "createdAt")));
     }
 }

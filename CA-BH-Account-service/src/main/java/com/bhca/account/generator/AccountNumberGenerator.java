@@ -2,5 +2,5 @@ package com.bhca.account.generator;
 
 public interface AccountNumberGenerator {
 
-    String generate();
+    String generate(String accountId);
 }
