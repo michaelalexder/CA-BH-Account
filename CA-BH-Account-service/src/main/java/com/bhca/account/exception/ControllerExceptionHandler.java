@@ -20,21 +20,21 @@ public class ControllerExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorView handleServerException(Exception e) {
         return convert(HttpStatus.INTERNAL_SERVER_ERROR, e,
-                "Unexpected error occurred. Sorry for inconvenience.");
+                "Unexpected error occurred. Sorry for inconvenience. ");
     }
 
     @ExceptionHandler(NoHandlerFoundException.class)
     @ResponseBody
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorView handleBadRequestException(NoHandlerFoundException e) {
-        return convert(HttpStatus.NOT_FOUND, e, "No such path exist.");
+        return convert(HttpStatus.NOT_FOUND, e, "No such path exist. ");
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
     @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorView handleBadRequestException(IllegalArgumentException e) {
-        return convert(HttpStatus.BAD_REQUEST, e, "Bad request.");
+        return convert(HttpStatus.BAD_REQUEST, e, "Bad request. ");
     }
 
     private ErrorView convert(HttpStatus httpStatus, Exception e, String message) {

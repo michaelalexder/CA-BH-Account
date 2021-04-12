@@ -2,6 +2,7 @@ package com.bhca.account.service;
 
 import com.bhca.account.configuration.transactions.TransactionServiceConfigurationProperties;
 import com.bhca.account.filter.MdcParams;
+import org.openapitools.client.model.AccountsTransactionRequest;
 import org.openapitools.client.model.CreateTransactionRequest;
 import org.openapitools.client.model.TransactionItem;
 import org.slf4j.Logger;
@@ -14,7 +15,6 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.lang.reflect.ParameterizedType;
 import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.Collections;
@@ -42,8 +42,8 @@ public class TransactionApiClient {
      */
     private static class Api {
 
-        private static final String CREATE_TRANSACTION = "/api/v1/transaction/create";
-        private static final String ACCOUNTS_LIST = "/api/v1/transaction";
+        private static final String CREATE_TRANSACTION = "/api/v1/transaction";
+        private static final String ACCOUNTS_LIST = "/api/v1/transaction/list";
     }
 
     private <T> HttpEntity<T> defaultHeaders(T body, Consumer<HttpHeaders> headersConsumer) {
@@ -63,10 +63,12 @@ public class TransactionApiClient {
                         .amount(amount), null), Void.class), url);
     }
 
-    public List<TransactionItem> transactions(List<UUID> accountsList) {
+    @SuppressWarnings("unchecked")
+    public List<TransactionItem> transactions(List<UUID> accountsIds) {
         String url = props.host + Api.ACCOUNTS_LIST;
         return (List<TransactionItem>) withLogging(() ->
-                restTemplate.postForEntity(url, defaultHeaders("", null), List.class), url);
+                restTemplate.postForEntity(url, defaultHeaders(new AccountsTransactionRequest()
+                        .accountIds(accountsIds), null), List.class), url);
     }
 
     private <T> T withLogging(Supplier<T> func, String url) {

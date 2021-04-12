@@ -22,7 +22,7 @@ public class AccountController {
 
     @PostMapping
     public void create(@RequestBody CreateAccountRequest request) {
-        logger.debug("New account creation is called for customer " + request.getCustomerId());
+        logger.debug("New account creation is called for customer {}", request.getCustomerId());
         accountTransactionService.createAccountWithTransaction(request.getCustomerId(), request.getInitialCredit());
         logger.debug("New Account created");
     }
@@ -30,7 +30,7 @@ public class AccountController {
     @GetMapping("/{customerId}")
     public List<AccountData> customerAccounts(@PathVariable UUID customerId, @RequestParam(required = false) Integer page,
                                               @RequestParam(required = false) Integer size) {
-        logger.debug("Retrieving accounts for customer " + customerId);
+        logger.debug("Retrieving accounts for customer {}", customerId);
         return accountTransactionService.accountsWithTransactions(customerId, page, size);
     }
 }
