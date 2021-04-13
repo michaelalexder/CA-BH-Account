@@ -1,7 +1,7 @@
 package com.bhca.account.service;
 
 import com.bhca.account.configuration.transactions.TransactionServiceConfigurationProperties;
-import com.bhca.account.filter.MdcParams;
+import com.bhca.common.mdc.MdcParams;
 import org.openapitools.client.model.AccountsTransactionRequest;
 import org.openapitools.client.model.CreateTransactionRequest;
 import org.openapitools.client.model.TransactionItem;

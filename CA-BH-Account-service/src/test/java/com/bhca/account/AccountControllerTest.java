@@ -4,7 +4,6 @@ import com.bhca.account.service.TransactionApiClient;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
-import org.mockito.stubbing.Answer;
 import org.openapitools.client.model.AccountData;
 import org.openapitools.client.model.CreateAccountRequest;
 import org.openapitools.client.model.TransactionItem;
