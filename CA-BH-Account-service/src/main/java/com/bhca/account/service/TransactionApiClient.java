@@ -9,8 +9,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -63,12 +65,13 @@ public class TransactionApiClient {
                         .amount(amount), null), Void.class), url);
     }
 
-    @SuppressWarnings("unchecked")
     public List<TransactionItem> transactions(List<UUID> accountsIds) {
         String url = props.host + Api.ACCOUNTS_LIST;
-        return (List<TransactionItem>) withLogging(() ->
-                restTemplate.postForEntity(url, defaultHeaders(new AccountsTransactionRequest()
-                        .accountIds(accountsIds), null), List.class), url);
+        return withLogging(() ->
+                restTemplate.exchange(url, HttpMethod.POST, defaultHeaders(new AccountsTransactionRequest()
+                                .accountIds(accountsIds), null),
+                        new ParameterizedTypeReference<List<TransactionItem>>() {
+                        }).getBody(), url);
     }
 
     private <T> T withLogging(Supplier<T> func, String url) {

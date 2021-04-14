@@ -45,9 +45,11 @@ public class AccountTransactionService {
 
     public List<AccountData> accountsWithTransactions(UUID customerId, Integer page, Integer size) {
         List<Account> accountData = accountService.getAccountVerboseData(customerId, page, size);
+        logger.debug("Fetched account data for {}", customerId);
         Map<UUID, List<TransactionItem>> accountTransactions = transactionApiClient.transactions(accountData.stream()
                 .map(Account::getId).collect(Collectors.toList())).stream()
                 .collect(Collectors.groupingBy(TransactionItem::getAccount));
+        logger.debug("Fetched account transactions for {}", customerId);
         return accountData.stream().map(account ->
                 new AccountData().id(account.getId())
                 .balance(account.getBalance())
