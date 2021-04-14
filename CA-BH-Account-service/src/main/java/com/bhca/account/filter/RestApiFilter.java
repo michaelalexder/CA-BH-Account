@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.UUID;
 
-import static com.bhca.account.filter.MdcParams.REQUEST_ID;
+import static com.bhca.common.mdc.MdcParams.REQUEST_ID;
 
 /**
  * Rest API filter. Adds request tracing data
